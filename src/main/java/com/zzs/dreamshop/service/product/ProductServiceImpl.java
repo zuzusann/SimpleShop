@@ -1,8 +1,8 @@
 package com.zzs.dreamshop.service.product;
 
 
-import com.zzs.dreamshop.ServiceRequest.ProductRequest;
-import com.zzs.dreamshop.ServiceRequest.ProductUpdateRequest;
+import com.zzs.dreamshop.dto.request.ProductRequest;
+import com.zzs.dreamshop.dto.request.ProductUpdateRequest;
 import com.zzs.dreamshop.entity.Category;
 import com.zzs.dreamshop.entity.Product;
 import com.zzs.dreamshop.exceptions.ProductNotFoundException;

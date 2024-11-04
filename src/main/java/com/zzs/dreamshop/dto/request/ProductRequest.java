@@ -1,4 +1,4 @@
-package com.zzs.dreamshop.ServiceRequest;
+package com.zzs.dreamshop.dto.request;
 
 import com.zzs.dreamshop.entity.Category;
 import lombok.Data;
@@ -6,7 +6,7 @@ import lombok.Data;
 import java.math.BigDecimal;
 
 @Data
-public class ProductUpdateRequest {
+public class ProductRequest {
 
     private int id;
     private String name;
