@@ -1,6 +1,7 @@
 package com.zzs.dreamshop.service.image;
 
 import com.zzs.dreamshop.dto.ImageDto;
+import com.zzs.dreamshop.dto.ProductDto;
 import com.zzs.dreamshop.entity.Image;
 import com.zzs.dreamshop.entity.Product;
 import com.zzs.dreamshop.exceptions.ResourceNotFoundException;
@@ -24,19 +25,31 @@ public class ImageServiceImpl implements ImageService {
     private final ProductServiceImpl productService;
 
     @Override
-    public Image getImageById(int id) {
-        return imageRepository.findById(id)
+    public ImageDto getImageById(int id) {
+         Image image =  imageRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Image not found!"));
+         return maptoImageDto(image);
+    }
+
+    private ImageDto maptoImageDto(Image image) {
+        ImageDto imageDto = new ImageDto();
+        imageDto.setId(image.getId());
+        imageDto.setFilename(image.getFilename());
+        imageDto.setUrl(imageDto.getUrl());
+        return imageDto;
+
+
     }
 
     @Override
     public void updateImage(MultipartFile file, int imageId) {
-        Image image = getImageById(imageId);
+        Image image = imageRepository.getReferenceById(imageId);
         try {
             image.setFilename(file.getOriginalFilename());
             image.setFileType(file.getContentType());
             image.setImage(new SerialBlob(file.getBytes()));
             imageRepository.save(image);
+
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -52,7 +65,7 @@ public class ImageServiceImpl implements ImageService {
 
     @Override
     public List<ImageDto> saveImage(int productId, List<MultipartFile> files) {
-        Product product = productService.getProductById(productId);
+        ProductDto product = productService.getProductById(productId);
 
         List<ImageDto> imageDto = new ArrayList<>();
         for(MultipartFile file : files){
@@ -61,7 +74,6 @@ public class ImageServiceImpl implements ImageService {
                 image.setFilename(file.getOriginalFilename());
                 image.setFileType(file.getContentType());
                 image.setImage(new SerialBlob(file.getBytes()));
-                image.setProduct(product);
                 String buildDownloadUrl = "/api/images/image/download";
                 String downloadUrl = buildDownloadUrl + image.getId();
                 image.setUrl(downloadUrl);
@@ -72,7 +84,7 @@ public class ImageServiceImpl implements ImageService {
 
                 ImageDto savedImageDto = new ImageDto();
                 savedImageDto.setId(savedImage.getId());
-                savedImageDto.setFileName(savedImage.getFilename());
+                savedImageDto.setFilename(image.getFilename());
                 savedImageDto.setUrl(savedImage.getUrl());
                 imageDto.add(savedImageDto);
 

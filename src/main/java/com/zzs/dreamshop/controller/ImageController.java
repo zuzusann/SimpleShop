@@ -40,8 +40,8 @@ public class ImageController {
 
     @GetMapping("/image/download/{imageId}")
     public ResponseEntity<Resource> downloadImage(@PathVariable int imageId) throws SQLException {
-        Image image = imageService.getImageById(imageId);
-        ByteArrayResource resource = new ByteArrayResource(image.getImage().getBytes(1, (int) image.getImage().length()));
+        ImageDto image = imageService.getImageById(imageId);
+        ByteArrayResource resource = new ByteArrayResource(image.getImage());
         return ResponseEntity.ok()
                 .contentType(MediaType.parseMediaType(image.getFileType()))
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" +image.getFilename() + "\"")
@@ -52,7 +52,7 @@ public class ImageController {
     @PutMapping("/image/{imageId}/update")
     public ResponseEntity<ApiResponse> updateImage(@PathVariable int imageId, @RequestBody MultipartFile file){
         try {
-            Image image = imageService.getImageById(imageId);
+            ImageDto image = imageService.getImageById(imageId);
             if(image != null){
                 imageService.updateImage(file,imageId);
                 return ResponseEntity.ok(new ApiResponse("Success!" ,null));
@@ -67,7 +67,7 @@ public class ImageController {
     @DeleteMapping("/image/{imageId}/delete")
     public ResponseEntity<ApiResponse> deleteImage(@PathVariable int imageId){
         try {
-            Image image = imageService.getImageById(imageId);
+            ImageDto image = imageService.getImageById(imageId);
             if(image != null){
                 imageService.deleteImageById(imageId);
                 return ResponseEntity.ok(new ApiResponse("Success!" ,null));

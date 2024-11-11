@@ -1,5 +1,6 @@
 package com.zzs.dreamshop.controller;
 
+import com.zzs.dreamshop.dto.ProductDto;
 import com.zzs.dreamshop.dto.request.ProductRequest;
 import com.zzs.dreamshop.dto.request.ProductUpdateRequest;
 import com.zzs.dreamshop.dto.response.ApiResponse;
@@ -25,7 +26,7 @@ public class ProductController {
     @GetMapping("/all-products")
     public ResponseEntity<ApiResponse> getAllProducts() {
         try {
-            List<Product> products = productService.getAllProducts();
+            List<ProductDto> products = productService.getAllProducts();
             return ResponseEntity.ok(new ApiResponse("success", products));
         } catch (ProductNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiResponse("error", e.getMessage()));
@@ -35,7 +36,7 @@ public class ProductController {
     @GetMapping("/get-product/by-id/{id}")
     public ResponseEntity<ApiResponse> getProductById(@PathVariable int id) {
         try {
-            Product products = productService.getProductById(id);
+            ProductDto products = productService.getProductById(id);
             return ResponseEntity.ok(new ApiResponse("success", products));
         } catch (ResourceNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiResponse("error", e.getMessage()));
@@ -45,7 +46,7 @@ public class ProductController {
     @GetMapping("/get-product/by-name/{name}")
     public ResponseEntity<ApiResponse> getProductByName(@PathVariable String name) {
         try {
-            List<Product> products = productService.getProductsByName(name);
+            List<ProductDto> products = productService.getProductsByName(name);
             return ResponseEntity.ok(new ApiResponse("success", products));
         } catch (ResourceNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiResponse("error", e.getMessage()));
@@ -55,7 +56,7 @@ public class ProductController {
     @GetMapping("/get-product/by-category-name/{categoryName}")
     public ResponseEntity<ApiResponse> getProductByCategoryName(@PathVariable String categoryName) {
         try {
-            List<Product> products = productService.getProductsByCategoryName(categoryName);
+            List<ProductDto> products = productService.getProductsByCategoryName(categoryName);
             return ResponseEntity.ok(new ApiResponse("success", products));
         } catch (ResourceNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiResponse("error", e.getMessage()));
@@ -65,7 +66,7 @@ public class ProductController {
     @GetMapping("/get-product/by-price/{price}")
     public ResponseEntity<ApiResponse> getProductByPrice(@PathVariable BigDecimal price) {
         try {
-            List<Product> products = productService.getProductsByPrice(price);
+            List<ProductDto> products = productService.getProductsByPrice(price);
             return ResponseEntity.ok(new ApiResponse("success", products));
         } catch (ResourceNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiResponse("error", e.getMessage()));
@@ -75,7 +76,7 @@ public class ProductController {
     @GetMapping("/get-product/by-brand/{brand}")
     public ResponseEntity<ApiResponse> getProductByBrand(@PathVariable String brand) {
         try {
-            List<Product> products = productService.getProductsByBrand(brand);
+            List<ProductDto> products = productService.getProductsByBrand(brand);
             return ResponseEntity.ok(new ApiResponse("success", products));
         } catch (ResourceNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiResponse("error", e.getMessage()));
@@ -85,7 +86,7 @@ public class ProductController {
     @GetMapping("/get-product/by-category-and-brand")
     public ResponseEntity<ApiResponse> getProductByCategoryAndBrand(@RequestParam String category, @RequestParam String brand) {
         try {
-            List<Product> products = productService.getProductsByCategoryAndBrand(category, brand);
+            List<ProductDto> products = productService.getProductsByCategoryAndBrand(category, brand);
             return ResponseEntity.ok(new ApiResponse("success", products));
         } catch (ResourceNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiResponse("error", e.getMessage()));
@@ -95,7 +96,7 @@ public class ProductController {
     @GetMapping("/get-product/by-brand-and-name")
     public ResponseEntity<ApiResponse> getProductByBrandAndName(@RequestParam String brand, @RequestParam String name) {
         try {
-            List<Product> products = productService.getProductsByBrandAndName(brand, name);
+            List<ProductDto> products = productService.getProductsByBrandAndName(brand, name);
             return ResponseEntity.ok(new ApiResponse("success", products));
         } catch (ResourceNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiResponse("error", e.getMessage()));
@@ -116,7 +117,7 @@ public class ProductController {
     @PostMapping("/add-product")
     public ResponseEntity<ApiResponse> createProduct(@RequestBody ProductRequest product) {
         try {
-            Product createproduct = productService.addProduct(product);
+            ProductDto createproduct = productService.addProduct(product);
             return ResponseEntity.ok(new ApiResponse("success", createproduct));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ApiResponse("error", e.getMessage()));
@@ -126,7 +127,7 @@ public class ProductController {
     @PutMapping("/update-product/{id}")
     public ResponseEntity<ApiResponse> updateProduct(@PathVariable int id, @RequestBody ProductUpdateRequest product) {
         try {
-            Product updateProduct = productService.updateProduct(product, id);
+            ProductDto updateProduct = productService.updateProduct(product, id);
             return ResponseEntity.ok(new ApiResponse("success", updateProduct));
         } catch (ResourceNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiResponse("error", e.getMessage()));
